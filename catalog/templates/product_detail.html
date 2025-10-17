@@ -3,19 +3,19 @@
 {% block content %}
 <div class="container">
     <div class="row text-center">
-        {% for product in products%}
-        <div class="col-3">
+        <div class="col-6 mx-auto">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
                 </div>
                 <div class="card-body">
                     <img src="{{ product.name | media_filter }}" alt="Изображение товара" style="width: 100%; height: auto;" />
+                    <h2 class="card-text fs-4">Категория: {{ product.category }}</h2>
+                    <h2 class="lead">Описание: {{ product.description | truncatechars:100 }}</h2>
                     <h1 class="card-title pricing-card-title">{{ product.price }} руб.</h1>
-                    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:product_detail' product.pk %}">О товаре</a>
+                    <a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:home' %}">На главную</a>
                 </div>
             </div>
         </div>
-        {% endfor %}
     </div>
 {% endblock%}
