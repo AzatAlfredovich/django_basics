@@ -8,11 +8,16 @@
 
 </head>
 <body>
-{% include "includes/inc_menu.html"%}
+{% include "catalog/includes/inc_menu.html"%}
 
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Alfredovich Store</h1>
     <p class="lead">Alfredovich Store - ваш любимый супермаркет в два клика!</p>
+    <p>
+        {% block create_button %}
+        <a class="btn btn-primary" href="{% url 'catalog:product_create' %}" role="button">Создать продукт</a>
+        {% endblock %}
+    </p>
 </div>
 
 {% block content %}
@@ -37,13 +42,13 @@
             <div class="col-6 col-md">
                 <h5>Дополнительно</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Тут мы пишем</a></li>
+                    <li><a class="text-muted" href="{% url 'blog:blogs' %}">Наш блог</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
                 <h5>О нас</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="{% url 'catalog:contacts' %}">Контакты</a></li>
+                    <li><a class="text-muted" href="{% url 'catalog:contacts' %}" role="button">Контакты</a></li>
                 </ul>
             </div>
         </div>

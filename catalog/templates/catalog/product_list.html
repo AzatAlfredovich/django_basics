@@ -1,0 +1,25 @@
+{% extends "catalog/base.html" %}
+{% load my_tags %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        {% for product in object_list%}
+        <div class="col-6">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <img src="{{ product.name | media_filter }}" alt="Изображение товара" style="width: 100%; height: auto;" />
+                    <h1 class="card-title pricing-card-title mb-3">{{ product.price }} руб.</h1>
+                    <div class="buttons-container d-flex flex-column w-100">
+                        <a class="btn btn-md btn-outline-success full-width-btn mb-3" href="{% url 'catalog:product_detail' product.pk %}">Посмотреть</a>
+                        <a class="btn btn-md btn-outline-primary full-width-btn mb-3" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                        <a class="btn btn-md btn-outline-danger full-width-btn mb-3" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                     </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock%}
