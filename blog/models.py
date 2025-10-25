@@ -35,6 +35,7 @@ class Blog(models.Model):
         verbose_name="Счетчик просмотров",
         help_text="Укажите количество просмотров",
         default=0,
+        editable=False
     )
 
     class Meta:
