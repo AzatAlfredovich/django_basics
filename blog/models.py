@@ -30,12 +30,12 @@ class Blog(models.Model):
     )
     publication_sign = models.BooleanField(
         default=False,
+        verbose_name="Отметка о публикации",
     )
     views_counter = models.PositiveIntegerField(
         verbose_name="Счетчик просмотров",
         help_text="Укажите количество просмотров",
         default=0,
-        editable=False
     )
 
     class Meta:

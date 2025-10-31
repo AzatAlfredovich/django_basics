@@ -43,7 +43,7 @@ class Product(models.Model):
         help_text="Загрузите фото продукта",
     )
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="products"
+        Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="products"
     )
     price = models.IntegerField(
         verbose_name="Цена продукта", help_text="Введите цену продукта"
