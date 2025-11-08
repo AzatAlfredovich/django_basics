@@ -56,6 +56,16 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
 
+    def dispatch(self, request, *args, **kwargs):
+        # Проверяем права на удаление
+        if not (
+            request.user.is_superuser
+            or request.user == self.get_object().owner
+            or request.user.has_perm("catalog.delete_product")
+        ):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
 
 class ContactsView(TemplateView):
     template_name = "catalog/contacts.html"
