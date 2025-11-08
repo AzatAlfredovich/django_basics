@@ -14,8 +14,12 @@
                     <h1 class="card-title pricing-card-title mb-3">{{ product.price }} руб.</h1>
                     <div class="buttons-container d-flex flex-column w-100">
                         <a class="btn btn-md btn-outline-success full-width-btn mb-3" href="{% url 'catalog:product_detail' product.pk %}">Посмотреть</a>
+                        {% if perms.catalog.change_product or user == product.owner %}
                         <a class="btn btn-md btn-outline-primary full-width-btn mb-3" href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+                        {% endif %}
+                        {% if perms.catalog.delete_product or user == product.owner %}
                         <a class="btn btn-md btn-outline-danger full-width-btn mb-3" href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+                        {% endif %}
                      </div>
                 </div>
             </div>

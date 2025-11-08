@@ -1,7 +1,12 @@
 from django.http import HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  UpdateView)
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
 from blog.forms import BlogForm
 from blog.models import Blog
