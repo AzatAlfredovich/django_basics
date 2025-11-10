@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import CustomUser
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -35,6 +37,18 @@ class Product(models.Model):
         blank=True,
         null=True,
     )
+
+    owner = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="Владелец",
+        help_text="Укажите владельца продукта",
+    )
+
+    publication_sign = models.BooleanField(
+        default=False,
+        verbose_name="Отметка о публикации",
+    )
     image = models.ImageField(
         upload_to="images/",
         blank=True,
@@ -43,7 +57,10 @@ class Product(models.Model):
         help_text="Загрузите фото продукта",
     )
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, verbose_name="Категория", related_name="products"
+        Category,
+        on_delete=models.CASCADE,
+        verbose_name="Категория",
+        related_name="products",
     )
     price = models.IntegerField(
         verbose_name="Цена продукта", help_text="Введите цену продукта"
@@ -67,6 +84,9 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "category"]
+        permissions = [
+            ("can_unpublish_product", "Can_unpublish_product"),
+        ]
 
     def __str__(self):
         return f"Продукт - {self.name}, Категория продукта - {self.category}"

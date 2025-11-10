@@ -19,9 +19,10 @@ class RegisterView(CreateView):
         return super().form_valid(form)
 
     def send_welcome_email(self, user_email):
-        subject = 'Добро пожаловать в наш сервис'
-        message = 'Спасибо, что зарегистрировались в нашем сервисе!'
-        from_email = 'tested@mail.ru'  # Это может быть любой адрес, так как письмо не будет реально отправляться
-        recipient_list = [user_email,]
+        subject = "Добро пожаловать в наш сервис"
+        message = "Спасибо, что зарегистрировались в нашем сервисе!"
+        from_email = "tested@mail.ru"  # Это может быть любой адрес, так как письмо не будет реально отправляться
+        recipient_list = [
+            user_email,
+        ]
         send_mail(subject, message, from_email, recipient_list)
-

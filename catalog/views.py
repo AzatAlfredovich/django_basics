@@ -1,9 +1,16 @@
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  TemplateView, UpdateView)
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    TemplateView,
+    UpdateView,
+)
 
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, ProductModeratorForm
 from catalog.models import Product
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -20,8 +27,11 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    # fields = ("name", "description", "image", "category", "price")
     success_url = reverse_lazy("catalog:home")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
@@ -30,10 +40,31 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     # fields = ("name", "description", "image", "category", "price")
     success_url = reverse_lazy("catalog:home")
 
+    def get_form_class(self):
+        user = self.request.user
+        if user.is_superuser:
+            return ProductForm
+        elif user == self.object.owner:
+            return ProductForm
+        elif user.has_perm("catalog.can_unpublish_product"):
+            return ProductModeratorForm
+        else:
+            raise PermissionDenied
+
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy("catalog:home")
+
+    def dispatch(self, request, *args, **kwargs):
+        # Проверяем права на удаление
+        if not (
+            request.user.is_superuser
+            or request.user == self.get_object().owner
+            or request.user.has_perm("catalog.delete_product")
+        ):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ContactsView(TemplateView):
