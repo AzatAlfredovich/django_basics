@@ -11,12 +11,46 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Product, Category
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from catalog.services import get_products_from_cache, get_products_by_category
+
+
+class CategoryProductView(ListView):
+    model = Product
+    template_name = "catalog/category_product.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        # Получаем ID категории из URL
+        category_id = self.kwargs["category_id"]
+        # Используем вспомогательную функцию для получения продуктов
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Добавляем полный список категорий в контекст
+        context["categories"] = Category.objects.all()
+        current_category = Category.objects.get(id=self.kwargs["category_id"])
+        context["current_category_name"] = current_category.name
+
+        return context
 
 
 class ProductListView(ListView):
     model = Product
+    context_object_name = "products"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Получаем все категории и передаем их в шаблон
+        context["categories"] = Category.objects.all()
+        return context
+
+    def get_queryset(self):
+        return get_products_from_cache()
+
     # catalog/product_list.html
 
 

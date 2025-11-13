@@ -10,9 +10,9 @@
                 </div>
                 <div class="card-body">
                     <img src="{{ product.name | media_filter }}" alt="Изображение товара" style="width: 100%; height: auto;" />
-                    <h2 class="card-text fs-4">Категория: {{ object.category }}</h2>
-                    <h2 class="lead mb-3">Описание: {{ object.description | truncatechars:100 }}</h2>
-                    <h1 class="card-title pricing-card-title mb-3">{{ object.price }} руб.</h1>
+                    <h2 class="card-text fs-4">Категория: {{ product.category }}</h2>
+                    <h2 class="lead mb-3">Описание: {{ product.description | truncatechars:100 }}</h2>
+                    <h1 class="card-title pricing-card-title mb-3">{{ product.price }} руб.</h1>
                     <a class="btn btn-md btn-block btn-outline-primary mb-3" href="{% url 'catalog:home' %}" role="button" >На главную</a>
                 </div>
             </div>

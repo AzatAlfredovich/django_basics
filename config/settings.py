@@ -144,4 +144,13 @@ AUTH_USER_MODEL = "users.CustomUser"
 # LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = "users:login"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+
+CACHE_ENABLED = os.getenv("CACHE_STATUS")
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv("LOCATION"),
+        }
+    }
